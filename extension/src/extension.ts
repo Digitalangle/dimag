@@ -84,7 +84,7 @@ async function checkLearningConsent(context: vscode.ExtensionContext): Promise<v
 
   if (choice === 'Learn More') {
     vscode.env.openExternal(
-      vscode.Uri.parse('https://github.com/digitalangle/dimag-brain#privacy--transparency')
+      vscode.Uri.parse('https://github.com/Digitalangle/dimag#privacy--transparency')
     );
     return checkLearningConsent(context); // Ask again
   }
