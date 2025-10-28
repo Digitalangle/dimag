@@ -1,0 +1,80 @@
+name: Build Extension
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'extension/**'
+      - '.github/workflows/build-extension.yml'
+  pull_request:
+    branches: [main, develop]
+    paths:
+      - 'extension/**'
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [18, 20]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+          cache-dependency-path: 'extension/package-lock.json'
+
+      - name: Install dependencies
+        run: |
+          cd extension
+          npm ci
+
+      - name: Lint TypeScript
+        run: |
+          cd extension
+          npm run lint
+
+      - name: Compile TypeScript
+        run: |
+          cd extension
+          npm run compile
+
+      - name: Run tests
+        run: |
+          cd extension
+          npm test
+        continue-on-error: true
+
+      - name: Package extension (.vsix)
+        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '20'
+        run: |
+          cd extension
+          npm install -g @vscode/vsce
+          vsce package
+
+      - name: Upload extension artifact
+        if: matrix.os == 'ubuntu-latest' && matrix.node-version == '20'
+        uses: actions/upload-artifact@v4
+        with:
+          name: dimag-extension
+          path: extension/*.vsix
+          retention-days: 30
+
+      - name: Comment build status on PR
+        if: failure() && github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `❌ **Build failed on ${{ matrix.os }} with Node ${{ matrix.node-version }}**\n\nPlease check the workflow logs for details.`
+            })

@@ -1,0 +1,12 @@
+{
+  "name": "dimag-brain-scripts",
+  "version": "1.0.0",
+  "description": "Validation scripts for Dimag Brain learnings",
+  "private": true,
+  "scripts": {
+    "validate": "node validate-patterns.js && node validate-statistics.js && node check-duplicates.js && node validate-quality.js"
+  },
+  "dependencies": {
+    "ajv": "^8.12.0"
+  }
+}
