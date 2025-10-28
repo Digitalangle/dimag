@@ -17,17 +17,17 @@ export async function activate(context: vscode.ExtensionContext) {
   // Check if user consented to learning
   await checkLearningConsent(context);
 
-  // Initialize orchestrator (the brain)
-  const orchestrator = new DimagOrchestrator(context);
-  context.globalState.update('orchestrator', orchestrator);
-
   // Initialize learning sync (pulls updates from Git)
   const learningSync = new LearningSync(context);
   await learningSync.initialize();
   learningSync.startAutoSync();
 
+  // Initialize orchestrator (the brain) - pass learningSync for pattern matching
+  const orchestrator = new DimagOrchestrator(context, learningSync);
+  context.globalState.update('orchestrator', orchestrator);
+
   // Register all commands
-  registerCommands(context, orchestrator);
+  registerCommands(context, orchestrator, learningSync);
 
   // Show status bar item
   const statusBar = vscode.window.createStatusBarItem(
@@ -111,7 +111,8 @@ async function checkLearningConsent(context: vscode.ExtensionContext): Promise<v
  */
 function registerCommands(
   context: vscode.ExtensionContext,
-  orchestrator: DimagOrchestrator
+  orchestrator: DimagOrchestrator,
+  learningSync: LearningSync
 ): void {
 
   // Main analysis command
@@ -163,13 +164,12 @@ function registerCommands(
   // Manual sync command
   context.subscriptions.push(
     vscode.commands.registerCommand('dimag.syncLearnings', async () => {
-      const sync = new LearningSync(context);
       await vscode.window.withProgress({
         location: vscode.ProgressLocation.Notification,
         title: "🧠 Syncing learnings from community...",
         cancellable: false
       }, async () => {
-        const result = await sync.sync();
+        const result = await learningSync.forceSync();
 
         if (result.updated) {
           vscode.window.showInformationMessage(
@@ -181,6 +181,45 @@ function registerCommands(
           );
         }
       });
+    })
+  );
+
+  // Commit learnings command (called by learning system)
+  context.subscriptions.push(
+    vscode.commands.registerCommand('dimag.commitLearnings', async () => {
+      // This is triggered by LearningCapture when patterns are extracted
+      const { GitCommitter } = await import('./learning/git-committer');
+      const committer = new GitCommitter(context);
+      await committer.initialize();
+
+      const extractedPatterns = context.globalState.get<any[]>('extractedPatterns');
+
+      if (!extractedPatterns || extractedPatterns.length === 0) {
+        return;
+      }
+
+      const result = await committer.commitPatterns(extractedPatterns);
+
+      if (result.success) {
+        vscode.window.showInformationMessage(
+          `✅ Committed ${extractedPatterns.length} patterns via ${result.authMethod}`
+        );
+        // Clear extracted patterns
+        await context.globalState.update('extractedPatterns', undefined);
+      } else {
+        vscode.window.showErrorMessage(
+          `Failed to commit learnings: ${result.error}`
+        );
+      }
+    })
+  );
+
+  // Reload patterns command (called after sync)
+  context.subscriptions.push(
+    vscode.commands.registerCommand('dimag.reloadPatterns', async () => {
+      // This is triggered by LearningSync after successful sync
+      // PatternMatcher will reload patterns automatically on next use
+      console.log('🧠 Patterns reloaded from Git repository');
     })
   );
 }

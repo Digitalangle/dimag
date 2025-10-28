@@ -1,0 +1,25 @@
+# Dependencies
+extension/node_modules/
+node_modules/
+
+# Compiled output
+extension/out/
+out/
+dist/
+
+# VS Code
+.vscode/
+
+# Package locks (optional - can be committed if desired)
+extension/package-lock.json
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.log
+*.tmp
+
+# Extension packaging
+*.vsix

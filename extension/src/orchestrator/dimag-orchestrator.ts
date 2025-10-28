@@ -10,6 +10,7 @@ import * as vscode from 'vscode';
 import { ClaudeAgent } from '../agents/claude-agent';
 import { ChatGPTAgent } from '../agents/chatgpt-agent';
 import { LearningCapture } from '../learning/capture';
+import { LearningSync } from '../learning/sync';
 import { PatternMatcher } from '../brain/pattern-matcher';
 import { MemoryEngine } from '../brain/memory-engine';
 
@@ -41,16 +42,18 @@ export class DimagOrchestrator {
   private claudeAgent: ClaudeAgent;
   private chatgptAgent: ChatGPTAgent;
   private learningCapture: LearningCapture;
+  private learningSync: LearningSync;
   private patternMatcher: PatternMatcher;
   private memoryEngine: MemoryEngine;
   private context: vscode.ExtensionContext;
 
-  constructor(context: vscode.ExtensionContext) {
+  constructor(context: vscode.ExtensionContext, learningSync: LearningSync) {
     this.context = context;
+    this.learningSync = learningSync;
     this.claudeAgent = new ClaudeAgent(context);
     this.chatgptAgent = new ChatGPTAgent(context);
     this.learningCapture = new LearningCapture(context);
-    this.patternMatcher = new PatternMatcher(context);
+    this.patternMatcher = new PatternMatcher(context, learningSync);
     this.memoryEngine = new MemoryEngine(this.getWorkspacePath());
   }
 
@@ -140,10 +143,18 @@ export class DimagOrchestrator {
 
             // Capture success
             await this.learningCapture.captureApproval(
-              synthesis,
+              JSON.stringify(synthesis.fixes),
+              {
+                projectType: 'unknown', // TODO: detect project type
+                technologies: [],
+                problemType: 'ANALYZE_PROJECT'
+              },
               {
                 success: true,
-                timeSaved: (Date.now() - startTime) / 1000
+                metrics: {
+                  timeSaved: (Date.now() - startTime) / 1000,
+                  fixesApplied: synthesis.fixes.length
+                }
               }
             );
           }
