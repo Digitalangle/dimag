@@ -14,20 +14,30 @@ import { LearningDashboard } from './ui/learning-dashboard';
 export async function activate(context: vscode.ExtensionContext) {
   console.log('🧠 Dimag is activating...');
 
-  // Check if user consented to learning
-  await checkLearningConsent(context);
+  try {
+    // Check if user consented to learning
+    await checkLearningConsent(context);
 
-  // Initialize learning sync (pulls updates from Git)
-  const learningSync = new LearningSync(context);
-  await learningSync.initialize();
-  learningSync.startAutoSync();
+    // Initialize learning sync (pulls updates from Git)
+    const learningSync = new LearningSync(context);
+    try {
+      await learningSync.initialize();
+      learningSync.startAutoSync();
+    } catch (syncError: any) {
+      console.warn('Learning sync initialization failed (non-critical):', syncError.message);
+    }
 
-  // Initialize orchestrator (the brain) - pass learningSync for pattern matching
-  const orchestrator = new DimagOrchestrator(context, learningSync);
-  context.globalState.update('orchestrator', orchestrator);
+    // Initialize orchestrator (the brain) - pass learningSync for pattern matching
+    const orchestrator = new DimagOrchestrator(context, learningSync);
+    context.globalState.update('orchestrator', orchestrator);
 
-  // Register all commands
-  registerCommands(context, orchestrator, learningSync);
+    // Register all commands
+    registerCommands(context, orchestrator, learningSync);
+  } catch (error: any) {
+    console.error('Dimag activation error:', error);
+    vscode.window.showErrorMessage(`Dimag activation failed: ${error.message}`);
+    // Continue with minimal functionality
+  }
 
   // Show status bar item
   const statusBar = vscode.window.createStatusBarItem(
