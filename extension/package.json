@@ -1,0 +1,168 @@
+{
+  "name": "dimag",
+  "displayName": "Dimag - AI CTO Orchestrator",
+  "description": "Self-learning AI orchestrator that coordinates multiple AI agents to analyze, improve, and build projects",
+  "version": "0.1.0",
+  "publisher": "digitalangle",
+  "icon": "media/icon.png",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "AI",
+    "Programming Languages",
+    "Machine Learning",
+    "Other"
+  ],
+  "keywords": [
+    "ai",
+    "cto",
+    "orchestrator",
+    "multi-agent",
+    "self-learning",
+    "claude",
+    "chatgpt",
+    "copilot"
+  ],
+  "activationEvents": [
+    "onCommand:dimag.analyzeProject",
+    "onCommand:dimag.createProject",
+    "onCommand:dimag.activate"
+  ],
+  "main": "./out/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "dimag.analyzeProject",
+        "title": "Dimag: Analyze and Improve Project",
+        "icon": "$(brain)"
+      },
+      {
+        "command": "dimag.createProject",
+        "title": "Dimag: Create New Project",
+        "icon": "$(add)"
+      },
+      {
+        "command": "dimag.activate",
+        "title": "Dimag: Activate Autonomous Mode",
+        "icon": "$(rocket)"
+      },
+      {
+        "command": "dimag.reviewLearnings",
+        "title": "Dimag: Review Learnings",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "dimag.showDashboard",
+        "title": "Dimag: Show Learning Dashboard",
+        "icon": "$(dashboard)"
+      },
+      {
+        "command": "dimag.syncLearnings",
+        "title": "Dimag: Sync Learnings from Community",
+        "icon": "$(sync)"
+      }
+    ],
+    "configuration": {
+      "title": "Dimag",
+      "properties": {
+        "dimag.learning.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable learning mode to help improve Dimag for everyone"
+        },
+        "dimag.learning.autoCommit": {
+          "type": "boolean",
+          "default": true,
+          "description": "Automatically commit learnings to Git repository"
+        },
+        "dimag.learning.commitThreshold": {
+          "type": "number",
+          "default": 10,
+          "description": "Number of learnings before auto-commit (1-50)"
+        },
+        "dimag.learning.syncInterval": {
+          "type": "number",
+          "default": 3600000,
+          "description": "How often to sync learnings from community (milliseconds, default 1 hour)"
+        },
+        "dimag.learning.gitRepo": {
+          "type": "string",
+          "default": "https://github.com/digitalangle/dimag-brain",
+          "description": "Git repository URL for learnings"
+        },
+        "dimag.learning.shareAnonymously": {
+          "type": "boolean",
+          "default": true,
+          "description": "Share learnings anonymously (no personal info)"
+        },
+        "dimag.learning.method": {
+          "type": "string",
+          "enum": ["auto", "direct-git", "backend-api"],
+          "default": "auto",
+          "description": "How to share learnings: auto (tries Git, falls back to API), direct-git (Git only), backend-api (API only)"
+        },
+        "dimag.permissionLevel": {
+          "type": "string",
+          "enum": ["ASK_UPFRONT", "ASK_PER_PHASE", "ASK_CRITICAL_ONLY", "FULL_AUTO"],
+          "default": "ASK_PER_PHASE",
+          "description": "When to ask for permission during autonomous workflows"
+        }
+      }
+    },
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "dimag",
+          "title": "Dimag",
+          "icon": "media/icon.svg"
+        }
+      ]
+    },
+    "views": {
+      "dimag": [
+        {
+          "id": "dimagMemories",
+          "name": "Project Memories"
+        },
+        {
+          "id": "dimagTasks",
+          "name": "Active Tasks"
+        },
+        {
+          "id": "dimagLearnings",
+          "name": "Learning Queue"
+        }
+      ]
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/test/runTest.js"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.85.0",
+    "@types/node": "^20.x",
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "eslint": "^8.56.0",
+    "typescript": "^5.3.3",
+    "@vscode/test-electron": "^2.3.8"
+  },
+  "dependencies": {
+    "simple-git": "^3.21.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/digitalangle/dimag-brain.git"
+  },
+  "bugs": {
+    "url": "https://github.com/digitalangle/dimag-brain/issues"
+  },
+  "homepage": "https://github.com/digitalangle/dimag-brain#readme",
+  "license": "MIT"
+}
