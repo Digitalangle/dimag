@@ -1,10 +1,10 @@
-# 🧠 Dimag Brain - Self-Learning AI Knowledge Base
+# 🧠 Dimag - Self-Learning AI CTO Orchestrator
 
-This repository is the **brain** of Dimag - a self-learning VS Code extension that gets smarter every time anyone uses it.
+A self-learning VS Code extension that gets smarter every time anyone uses it.
 
 ## What is This?
 
-Dimag Brain stores:
+Dimag stores:
 - ✅ **Learned Patterns** - Reusable solutions from real developers
 - ✅ **Anti-Patterns** - Mistakes to avoid
 - ✅ **Validation Rules** - Auto-generated from learnings
@@ -15,7 +15,7 @@ Every time a developer uses Dimag and makes a decision, the pattern is learned, 
 ## Repository Structure
 
 ```
-dimag-brain/
+dimag/
 ├── learnings/
 │   ├── patterns/              # Learned patterns (JSON)
 │   │   ├── architectural-decisions.json

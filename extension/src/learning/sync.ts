@@ -19,12 +19,12 @@ export class LearningSync {
   private git: SimpleGit | null = null;
   private repoPath: string;
   private autoSyncInterval: NodeJS.Timeout | null = null;
-  private readonly REPO_URL = 'https://github.com/digitalangle/dimag-brain.git';
+  private readonly REPO_URL = 'https://github.com/Digitalangle/dimag.git';
   private readonly AUTO_SYNC_INTERVAL = 60 * 60 * 1000; // 1 hour
 
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
-    this.repoPath = path.join(context.globalStorageUri.fsPath, 'dimag-brain');
+    this.repoPath = path.join(context.globalStorageUri.fsPath, 'dimag');
   }
 
   /**

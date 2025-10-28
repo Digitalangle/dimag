@@ -88,7 +88,7 @@
         },
         "dimag.learning.gitRepo": {
           "type": "string",
-          "default": "https://github.com/digitalangle/dimag-brain",
+          "default": "https://github.com/Digitalangle/dimag",
           "description": "Git repository URL for learnings"
         },
         "dimag.learning.shareAnonymously": {
@@ -158,11 +158,11 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/digitalangle/dimag-brain.git"
+    "url": "https://github.com/Digitalangle/dimag.git"
   },
   "bugs": {
-    "url": "https://github.com/digitalangle/dimag-brain/issues"
+    "url": "https://github.com/Digitalangle/dimag/issues"
   },
-  "homepage": "https://github.com/digitalangle/dimag-brain#readme",
+  "homepage": "https://github.com/Digitalangle/dimag#readme",
   "license": "MIT"
 }

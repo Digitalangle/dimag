@@ -18,7 +18,7 @@
 
 ```bash
 # 1. Open the extension folder
-cd /Users/da-studio2/Documents/dimag-brain/extension
+cd /Users/da-studio2/Documents/dimag/extension
 code .
 
 # 2. Press F5 (or Run → Start Debugging)
@@ -73,7 +73,7 @@ code .
 
 ```bash
 # 1. Navigate to extension folder
-cd /Users/da-studio2/Documents/dimag-brain/extension
+cd /Users/da-studio2/Documents/dimag/extension
 
 # 2. Install packaging tool (one-time)
 npm install -g @vscode/vsce
@@ -150,7 +150,7 @@ code --uninstall-extension digitalangle.dimag
 ```bash
 # When creating on GitHub:
 1. Go to github.com/digitalangle
-2. Create new repository: "dimag-brain"
+2. Create new repository: "dimag"
 3. Select: ⚫ Private  # ← Choose private
 4. Don't initialize with README
 ```
@@ -180,7 +180,7 @@ code --uninstall-extension digitalangle.dimag
 ```bash
 # When creating on GitHub:
 1. Go to github.com/digitalangle
-2. Create new repository: "dimag-brain"
+2. Create new repository: "dimag"
 3. Select: ⚪ Public  # ← Choose public
 4. Don't initialize with README
 ```
@@ -238,7 +238,7 @@ export VSCE_PAT="your-personal-access-token"
 vsce login digitalangle
 
 # 3. Publish extension
-cd /Users/da-studio2/Documents/dimag-brain/extension
+cd /Users/da-studio2/Documents/dimag/extension
 vsce publish
 
 # Extension is now live on VS Code Marketplace!
@@ -337,7 +337,7 @@ code --version  # Should be 1.85.0 or higher
 
 # Test Git access manually
 cd ~/.vscode/extensions
-git clone https://github.com/digitalangle/dimag-brain.git
+git clone https://github.com/digitalangle/dimag.git
 # If this works, extension will work
 ```
 

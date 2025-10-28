@@ -25,7 +25,7 @@ export class GitCommitter {
 
   constructor(context: vscode.ExtensionContext) {
     this.context = context;
-    this.repoPath = path.join(context.globalStorageUri.fsPath, 'dimag-brain');
+    this.repoPath = path.join(context.globalStorageUri.fsPath, 'dimag');
   }
 
   /**
