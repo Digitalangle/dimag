@@ -25,9 +25,7 @@
     "copilot"
   ],
   "activationEvents": [
-    "onCommand:dimag.analyzeProject",
-    "onCommand:dimag.createProject",
-    "onCommand:dimag.activate"
+    "*"
   ],
   "main": "./out/extension.js",
   "contributes": {
