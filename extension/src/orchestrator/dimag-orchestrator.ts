@@ -54,7 +54,11 @@ export class DimagOrchestrator {
     this.chatgptAgent = new ChatGPTAgent(context);
     this.learningCapture = new LearningCapture(context);
     this.patternMatcher = new PatternMatcher(context, learningSync);
-    this.memoryEngine = new MemoryEngine(this.getWorkspacePath());
+    this.memoryEngine = new MemoryEngine(context, {
+      projectPath: this.getWorkspacePath(),
+      autoValidate: true,
+      enableLearning: true
+    });
   }
 
   /**
