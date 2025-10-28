@@ -4,6 +4,7 @@
   "description": "Self-learning AI orchestrator that coordinates multiple AI agents to analyze, improve, and build projects",
   "version": "0.1.0",
   "publisher": "digitalangle",
+  "icon": "media/icon.png",
   "engines": {
     "vscode": "^1.85.0"
   },
@@ -113,7 +114,8 @@
       "activitybar": [
         {
           "id": "dimag",
-          "title": "Dimag"
+          "title": "Dimag",
+          "icon": "media/icon.svg"
         }
       ]
     },
